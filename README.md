@@ -1,10 +1,5 @@
 # Práctica Backend — NestJS + Docker + Render + MySQL
 
-## Objetivo
-
-Plantilla didáctica para desplegar una API REST con **NestJS**, **TypeORM**, **MySQL** (Aiven), **Docker** y **Render**. Aprenderás autenticación JWT, variables de entorno, contenedores y despliegue en la nube.
-
----
 
 ## Requisitos previos
 
@@ -68,7 +63,7 @@ npm install
 npm run start:dev
 ```
 
-La app arranca en `http://localhost:3000` cuando tu archivo `.env` tiene las variables de base de datos configuradas correctamente.
+La app arranca en `http://localhost:8080` cuando tu archivo `.env` tiene las variables de base de datos configuradas correctamente.
 
 ### 4. Usuario administrador (seed automático)
 
@@ -87,7 +82,7 @@ No necesitas insertar el admin manualmente.
 ### 5. Obtener token JWT (login)
 
 ```bash
-curl -X POST http://localhost:3000/auth/login \
+curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"Admin123!"}'
 ```
@@ -105,7 +100,7 @@ curl -X POST http://localhost:3000/auth/login \
 Copia el valor de `access_token` y úsalo en el header `Authorization`:
 
 ```bash
-curl -X POST http://localhost:3000/estudiante \
+curl -X POST http://localhost:8080/estudiante \
   -H "Authorization: Bearer TU_TOKEN_AQUI" \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Juan","codigo":"2024001"}'
@@ -195,7 +190,7 @@ Prueba localmente:
 
 ```bash
 docker build -t practica-backend .
-docker run --env-file .env -p 3000:3000 practica-backend
+docker run --env-file .env -p 8080:8080 practica-backend
 ```
 
 ### Paso 10 — Desplegar en Render
@@ -254,20 +249,18 @@ npm run build
 
 # Docker
 docker build -t practica-backend .
-docker run --env-file .env -p 3000:3000 practica-backend
+docker run --env-file .env -p 8080:8080 practica-backend
 docker ps
 docker logs <container_id>
 
-# Pruebas con curl
-curl http://localhost:3000/tasks
 
-curl -X POST http://localhost:3000/auth/login \
+curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"Admin123!"}'
 
-curl http://localhost:3000/estudiante
+curl http://localhost:8080/estudiante
 
-curl -X POST http://localhost:3000/estudiante \
+curl -X POST http://localhost:8080/estudiante \
   -H "Authorization: Bearer <TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Juan","codigo":"2024001"}'
