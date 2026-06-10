@@ -227,17 +227,6 @@ docker run --env-file .env -p 8080:8080 practica-backend
 
 ---
 
-## Rúbrica de evaluación (100 puntos)
-
-| Criterio | Peso | Descripción |
-|---|---|---|
-| Deploy inicial en Render | **30%** | La app arranca y responde en la URL pública |
-| Endpoint `/estudiante` | **30%** | POST protegido con JWT+Roles, GET funcional |
-| Uso correcto de `synchronize` | **20%** | `true` solo local, `false` en repo final |
-| Dockerfile + `.dockerignore` | **10%** | Build y run exitosos |
-| Quiz | **10%** | Respuestas correctas a preguntas |
-
----
 
 ## Comandos útiles
 
