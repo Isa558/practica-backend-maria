@@ -165,6 +165,20 @@ Implementa `GET /estudiante` que devuelva el/los registro(s) insertado(s).
 2. Si usas **Aiven**, configura SSL en `src/database/database.module.ts` según la documentación de tu proveedor.
 3. Ejecuta `npm run start:dev` — TypeORM creará las tablas automáticamente.
 4. Verifica en el panel de Aiven que existen las tablas `users`, `estudiante`, etc.
+## Módulo Estudiante
+
+Endpoints implementados:
+
+- GET /estudiante → Lista estudiantes
+- POST /estudiante → Crea estudiantes (solo admin)
+
+Entidad:
+
+- id
+- nombre
+- codigo
+
+Desplegado en Render y conectado a Aiven MySQL.
 
 ### Paso 6 — Insertar tu registro
 
