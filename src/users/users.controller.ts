@@ -35,6 +35,7 @@ export class UsersController {
   @Roles(Role.Admin)
   @ApiOperation({ summary: 'Crear usuario (solo admin)' })
   @ApiResponse({ status: 201, description: 'Usuario creado', type: UserResponseDto })
+  @ApiResponse({ status: 409, description: 'El nombre de usuario ya existe' })
   @ApiResponse({ status: 403, description: 'Acceso denegado' })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const user = await this.usersService.createUser(createUserDto);

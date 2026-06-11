@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -23,12 +23,34 @@ export class UsersService {
   }
 
   async createUser(dto: CreateUserDto): Promise<User> {
+    const existingUser = await this.findByUsername(dto.username);
+    if (existingUser) {
+      throw new ConflictException(`El usuario "${dto.username}" ya existe`);
+    }
+
     const hashedPassword = await bcrypt.hash(dto.password, this.saltRounds);
     const user = this.usersRepository.create({
       username: dto.username,
       password: hashedPassword,
       isAdmin: dto.isAdmin ?? false,
     });
-    return this.usersRepository.save(user);
+
+    try {
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      if (this.isDuplicateUsernameError(error)) {
+        throw new ConflictException(`El usuario "${dto.username}" ya existe`);
+      }
+      throw error;
+    }
+  }
+
+  private isDuplicateUsernameError(error: unknown): boolean {
+    if (!(error instanceof QueryFailedError)) {
+      return false;
+    }
+
+    const driverError = error.driverError as { code?: string };
+    return driverError.code === 'ER_DUP_ENTRY';
   }
 }
